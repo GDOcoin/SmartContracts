@@ -37,7 +37,7 @@ pragma solidity 0.4.24;
         address public owner;
     	using SafeMath for uint256;
     	
-         function Constrctor() public {
+         function constrctor() public {
             owner = msg.sender;
         }
     
