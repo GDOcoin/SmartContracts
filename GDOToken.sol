@@ -1,4 +1,15 @@
 pragma solidity 0.4.24;
+// ----------------------------------------------------------------------------
+// 'GDO' token contract
+//
+// Contract Owner : 0xef9ecd8a0a2e4b31d80b33e243761f4d93c990a8
+// Symbol      	  : GDO
+// Name           : GDO Token
+// Total supply   : 1,000,000,000
+// Decimals       : 18
+//
+// Copyright(c) 2018 onwards GDO Infotech Pvt Ltd, India (www.GDO.co.in)
+// ----------------------------------------------------------------------------
     
     /**
      * @title SafeMath
@@ -37,7 +48,7 @@ pragma solidity 0.4.24;
         address public owner;
     	using SafeMath for uint256;
     	
-         function constrctor() public {
+         constructor () public {
             owner = msg.sender;
         }
     
@@ -208,7 +219,7 @@ pragma solidity 0.4.24;
     /*       ADVANCED TOKEN STARTS HERE       */
     /******************************************/
     
-    contract GDOCoin is owned, TokenERC20 {
+    contract GDOToken is owned, TokenERC20 {
     
         uint256 public sellPrice;
         uint256 public buyPrice;
