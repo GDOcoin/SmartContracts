@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity 0.4.25;
 // ----------------------------------------------------------------------------
 // 'GDO' token contract
 //
@@ -93,7 +93,7 @@ pragma solidity 0.4.24;
             string tokenName,
             string tokenSymbol
         ) public {
-            totalSupply = initialSupply * 10 ** uint256(decimals);  // Update total supply with the decimal amount
+            totalSupply = initialSupply.mul(1 ether);           // Update total supply with the decimal amount
             balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
             name = tokenName;                                   // Set the name for display purposes
             symbol = tokenSymbol;                               // Set the symbol for display purposes
@@ -206,10 +206,10 @@ pragma solidity 0.4.24;
          */
         function burnFrom(address _from, uint256 _value) public returns (bool success) {
             require(balanceOf[_from] >= _value);                // Check if the targeted balance is enough
-            require(_value <= allowance[_from][msg.sender]);    // Check allowance
-            balanceOf[_from] = balanceOf[_from].sub(_value);                         // Subtract from the targeted balance
-            allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);             // Subtract from the sender's allowance
-            totalSupply = totalSupply.sub(_value);                              // Update totalSupply
+            require(_value <= allowance[_from][msg.sender]);    			// Check allowance
+            balanceOf[_from] = balanceOf[_from].sub(_value);                         	// Subtract from the targeted balance
+            allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value); 	// Subtract from the sender's allowance
+            totalSupply = totalSupply.sub(_value);                              	// Update totalSupply
           emit  Burn(_from, _value);
             return true;
         }
@@ -220,10 +220,16 @@ pragma solidity 0.4.24;
     /******************************************/
     
     contract GDOToken is owned, TokenERC20 {
-    
+        using SafeMath for uint256;
+        
+        // Public variables of the token
+    	string public tokenName = "GDO Token";
+        string public tokenSymbol = "GDO";
+        uint8 public decimals = 18;         			// 18 decimals is the strongly suggested default, avoid changing it
+        uint256 public initialSupply = 1500000000; 	        // Initial supply of the tokens   
+	
         uint256 public sellPrice;
         uint256 public buyPrice;
-    	using SafeMath for uint256;
     	
         mapping (address => bool) public frozenAccount;
     
@@ -231,11 +237,7 @@ pragma solidity 0.4.24;
         event FrozenFunds(address target, bool frozen);
     
         /* Initializes contract with initial supply tokens to the creator of the contract */
-         constructor (
-            uint256 initialSupply,
-            string tokenName,
-            string tokenSymbol
-        ) TokenERC20(initialSupply, tokenName, tokenSymbol) public {}
+         constructor () TokenERC20(initialSupply, tokenName, tokenSymbol) public {}
     
         /* Internal transfer, only can be called by this contract */
         function _transfer(address _from, address _to, uint _value) internal {
