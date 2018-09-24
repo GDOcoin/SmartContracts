@@ -206,10 +206,10 @@ pragma solidity 0.4.25;
          */
         function burnFrom(address _from, uint256 _value) public returns (bool success) {
             require(balanceOf[_from] >= _value);                // Check if the targeted balance is enough
-            require(_value <= allowance[_from][msg.sender]);    			// Check allowance
-            balanceOf[_from] = balanceOf[_from].sub(_value);                         	// Subtract from the targeted balance
-            allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value); 	// Subtract from the sender's allowance
-            totalSupply = totalSupply.sub(_value);                              	// Update totalSupply
+            require(_value <= allowance[_from][msg.sender]);    // Check allowance
+            balanceOf[_from] = balanceOf[_from].sub(_value);                         // Subtract from the targeted balance
+            allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);             // Subtract from the sender's allowance
+            totalSupply = totalSupply.sub(_value);                              // Update totalSupply
           emit  Burn(_from, _value);
             return true;
         }
@@ -225,7 +225,7 @@ pragma solidity 0.4.25;
         // Public variables of the token
     	string public tokenName = "GDO Token";
         string public tokenSymbol = "GDO";
-        uint8 public decimals = 18;         			// 18 decimals is the strongly suggested default, avoid changing it
+        uint8 public decimals = 18;         			        // 18 decimals is the strongly suggested default, avoid changing it
         uint256 public initialSupply = 1500000000; 	        // Initial supply of the tokens   
 	
         uint256 public sellPrice;
@@ -289,6 +289,6 @@ pragma solidity 0.4.25;
         function sell(uint256 amount) public {
             require(address(this).balance >= amount.mul(sellPrice));      // checks if the contract has enough ether to buy
             _transfer(msg.sender, this, amount);              // makes the transfers
-            msg.sender.transfer(amount * sellPrice);          // sends ether to the seller. It's important to do this last to avoid recursion attacks
+            msg.sender.transfer(amount.mul(sellPrice));          // sends ether to the seller. It's important to do this last to avoid recursion attacks
         }
     }
